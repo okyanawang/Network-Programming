@@ -2,7 +2,7 @@ import socket
 import os
 import select
 
-HOST = socket.gethostname()  # Standard loopback interface address (localhost)
+HOST = '192.168.1.2'  # Standard loopback interface address (localhost)
 PORT = 65432        # Port to listen on (non-privileged ports are > 1023)
 SERVER_DIR = os.path.dirname(os.path.realpath(__file__))
 
