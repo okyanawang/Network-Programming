@@ -1,7 +1,8 @@
 import socket
 import os
 
-HOST = socket.gethostname()  # The server's hostname or IP address
+# HOST = socket.gethostname()  # The server's hostname or IP address
+HOST = '192.168.1.2'
 PORT = 65432        # The port used by the server
 CLIENT_DIR = os.path.dirname(os.path.realpath(__file__))
 
