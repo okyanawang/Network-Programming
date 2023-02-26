@@ -9,7 +9,7 @@ CLIENT_DIR = os.path.dirname(os.path.realpath(__file__))
 def receive_file(sock, filename):
     with open(os.path.join(CLIENT_DIR, 'files', filename), 'wb') as f:
         h = str(sock.recv(1024), 'utf-8')
-        h2 = sock.recv(1024)
+        # h2 = sock.recv(1024)
         print(h)
         all_data = b''
         while True:
