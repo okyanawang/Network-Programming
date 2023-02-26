@@ -8,19 +8,29 @@ CLIENT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
+    command = input('Enter command: ')        
+    
+    s.sendall(command.encode())
+    
+    # 'File name: ' + filename + '\nFile size: ' + str(filesize) + ',\n'
+    title = s.recv(1024).split(b'\n')
+    filename = title[0].decode().split(" ")[2]
+    filesize = title[1].decode().split(" ")[2]
+    print('File name:', filename)
+    print('File size:', filesize)
+    all_data = b''
     while True:
-        command = input('Enter command: ')
-        if not command:
-            break
-        s.sendall(command.encode())
         data = s.recv(1024)
         if data == b'File not found':
             print('File not found')
-        else:
-            filename, file_data = data.split(b'\n', 1)
-            with open(os.path.join(CLIENT_DIR, 'files', filename.decode()), 'wb') as f:
-                f.write(file_data)
-            print('File saved as', filename.decode())
             break
+            
+        elif data == b'':
+            break
+        else:
+            all_data = all_data + data
+    with open(os.path.join(CLIENT_DIR, 'files', filename), 'wb') as f:
+        f.write(all_data)
+    print('File saved as', filename)
 s.close()
 print('Connection closed')
