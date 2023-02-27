@@ -52,7 +52,7 @@ def send_file(conn, filename, filesize):
         with open(os.path.join(SERVER_DIR, 'files', filename), 'rb') as f:
             file_data = f.read()
         # Send the file name and size as the title
-        title = 'File name: ' + filename + '\nFile size: ' + str(filesize) + ',\n'
+        title = 'File name: ' + filename + '\nFile size: ' + str(filesize) + ',\n\n\n'
         conn.send(title.encode())
         # Send the file data
         conn.sendall(file_data)

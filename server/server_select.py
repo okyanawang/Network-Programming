@@ -13,7 +13,7 @@ def send_file(conn, filename, filesize):
         with open(os.path.join(SERVER_DIR, 'files', filename), 'rb') as f:
             file_data = f.read()
         # Create a message to send before the file contents
-        title = 'File name: ' + filename + '\nFile size: ' + str(filesize) + ',\n'
+        title = 'File name: ' + filename + '\nFile size: ' + str(filesize) + ',\n\n\n'
         # Send the message followed by the file contents
         conn.send(title.encode())
         conn.sendall(file_data)
