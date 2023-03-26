@@ -1,7 +1,7 @@
 import socket
 import ssl
 
-host = 'www.its.ac.id'
+host = 'its.ac.id'
 host2 = 'classroom.its.ac.id'
 port = 443
 
