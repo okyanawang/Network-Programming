@@ -1,7 +1,8 @@
 import socket
 import os
 
-HOST = socket.gethostname()  # The server's hostname or IP address
+HOST = '192.168.43.227'
+# HOST = socket.gethostname()  # The server's hostname or IP address
 PORT = 65432        # The port used by the server
 # CLIENT_DIR = '/path/to/client/folder'  # Change this to the path of your client folder
 CLIENT_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -20,20 +21,24 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     print('File name:', filename)
     print('File size:', filesize)
     
-    all_data = b''
-    while True:
-        # Receive the file data from the server
-        data = s.recv(1024)
-        if data == b'File not found':
-            # If the file is not found on the server, print a message and break the loop
-            print('File not found')
-            break
-        elif data == b'':
-            # If there is no more data to receive, break the loop
-            break
-        else:
-            # Append the received data to the file data
-            all_data = all_data + data
+    all_data = b'' # Inisialisasi variabel all_data sebagai sebuah string kosong
+
+    while True: # Mulai loop
+        # Menerima data dari server menggunakan s.recv() dengan ukuran maksimum 1024 bytes
+        data = s.recv(1024) 
+        
+        if data == b'File not found': # Jika pesan "File not found" diterima dari server,
+            print('File not found')  # cetak pesan "File not found"
+            break                    # hentikan loop
+            
+        elif data == b'': # Jika tidak ada data lagi yang diterima dari server,
+            break         # hentikan loop
+            
+        else: # Jika ada data yang diterima dari server,
+            all_data = all_data + data # tambahkan data tersebut ke variabel all_data
+            
+    # Setelah loop selesai, variabel all_data akan berisi seluruh data file yang diterima dari server.
+
     
     # Write the file data to a file in the client directory
     with open(os.path.join(CLIENT_DIR, 'files', filename), 'wb') as f:

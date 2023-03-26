@@ -40,6 +40,8 @@ import os
 
 # Get the standard loopback interface address
 HOST = socket.gethostname()
+
+
 # Port to listen on (non-privileged ports are > 1023)
 PORT = 65432
 # Change this to the path of your server folder
