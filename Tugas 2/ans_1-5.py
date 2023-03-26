@@ -27,10 +27,12 @@
 # # close the socket
 # client_socket.close()
 
+# import statements that import necessary libraries for the script to work. socket is a library that provides an interface for network communication, ssl is a library for Secure Sockets Layer (SSL) encryption, and BeautifulSoup is a library for parsing HTML and XML documents.
 import socket
 import ssl
 from bs4 import BeautifulSoup as soup
 
+# class definition named HTTPS that initializes the instance variables HOST and PORT. It also calls several methods that are used to establish an SSL connection with a web server, send a GET request, receive a response, save the response to a file, and parse the response to get the HTTP status code, encoding, version, and character set.
 class HTTPS:
     def __init__(self, HOST, PORT):
         self.HOST = HOST
@@ -46,17 +48,21 @@ class HTTPS:
         self.get_httpver()
         self.get_charset()
 
+    # creates a socket and connects it to the specified host and port using the TCP protocol.
     def connect(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((self.HOST, self.PORT))
 
+    # creates an SSL context and wraps the socket with it. This enables SSL encryption for the communication between the client and the server.
     def SSL(self):
         context = ssl.create_default_context()
         self.sock = context.wrap_socket(self.sock, server_hostname=self.HOST)
 
+    #  sends a GET request to the server using the established socket connection.
     def request(self):
         self.sock.send(f"GET / HTTP/1.1\r\nHost:{self.HOST}\r\n\r\n".encode())
 
+    # receives the response from the server and saves it to the instance variable response. It also separates the response into a header and content, and saves them to the instance variables header and content.
     def receive(self):
         self.response = ''
         while True:
@@ -69,11 +75,13 @@ class HTTPS:
         self.header = self.response.split('<!DOCTYPE html>', maxsplit=1)[0]
         self.content = self.response.split('<!DOCTYPE html>', maxsplit=1)[1]
     
+    # saves the response to a text file named after the host in the format {HOST}_response.txt.
     def save_response(self):
         f = open(f"{self.HOST}_response.txt", "w+")
         f.write(self.response)
         f.close()
 
+    # parses the header to get the HTTP status code, encoding, version, and character set.
     def get_status(self):
         self.status = self.header.split("\r\n", 1)[0].split(maxsplit=1)[1]
         self.status_code = self.status.split()[0]
@@ -83,6 +91,7 @@ class HTTPS:
         print(f"Status code\t: {self.status_code}")
         print(f"Status deskripsi: {self.status_desc}")
 
+    # parses the header to get the encoding, version, and character set.
     def get_encoding(self):
         partition_header = self.header.split("\r\n")
         # Transfer-Encoding
@@ -103,11 +112,13 @@ class HTTPS:
         else:
             print("\nAccept-Encoding tidak ditemukan!")
     
+    # parses the header to get the HTTP version.
     def get_httpver(self):
         self.httpver = self.header.split("\r\n", 1)[0].split(maxsplit=1)[0]
         print("\n")
         print(f"Version: {self.httpver}")
 
+    # parses the header to get the character set.
     def get_charset(self):
         partition_header = self.header.split("\r\n")
         if any("charset" in word for word in partition_header):
@@ -118,6 +129,7 @@ class HTTPS:
         else:
             print("\nCharset tidak ditemukan!")
 
+# main function that creates an instance of the HTTPS class for each host in the list hosts.
 def parsing(response):
     doc = soup(response, "html.parser")
     direktori = []
